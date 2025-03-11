@@ -4,6 +4,11 @@
  */
 package View;
 
+import javax.swing.JOptionPane;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+
 /**
  *
  * @author DELL
@@ -18,6 +23,42 @@ public class MainView extends javax.swing.JFrame {
         this.setVisible(true);
         this.setResizable(false);
         this.setLocationRelativeTo(null);        
+    }
+    
+    private void updateBlocks(String name,int num){
+        try{
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Not enough blocks");
+        }
+    }
+    
+    private void updateJtree(String name, int num){
+            DefaultTreeModel model = (DefaultTreeModel) jTree1.getModel();
+            TreePath selectedPath = jTree1.getSelectionPath();
+            DefaultMutableTreeNode selectedNode;
+            if (selectedPath != null) {
+                selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
+            } else {
+                selectedNode = (DefaultMutableTreeNode) model.getRoot();
+            }
+            // Check if a node with the same name already exists
+            boolean nodeExists = false;
+            for (int i = 0; i < selectedNode.getChildCount(); i++) {
+                DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) selectedNode.getChildAt(i);
+                if (name.equals(childNode.getUserObject().toString())) {
+                    nodeExists = true;
+                    break;
+                }
+            }
+
+            if (!nodeExists) {
+                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
+                selectedNode.add(newNode);
+                model.reload(selectedNode);
+            } else {
+                JOptionPane.showMessageDialog(this, "Cant be 2 same files");
+            }
     }
 
     /**
@@ -45,6 +86,8 @@ public class MainView extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
+        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         jScrollPane1.setViewportView(jTree1);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 200, 180));
@@ -143,8 +186,19 @@ public class MainView extends javax.swing.JFrame {
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
         // TODO add your handling code here:
-        
-        System.out.println(jTree1.getSelectionPath().getPath() );
+        String name = JOptionPane.showInputDialog("Nombre del archivo/directorio");
+        if(!name.equals(null)){
+            String blocknum = JOptionPane.showInputDialog("Numero de bloques");
+            try{
+                int num = Integer.parseInt(blocknum);
+                this.updateJtree(name,num);
+                
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(this, "Not an integer");
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Empty String");
+        }
     }//GEN-LAST:event_createButtonActionPerformed
 
     /**
