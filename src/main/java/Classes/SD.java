@@ -12,6 +12,8 @@ public class SD {
     int capacity;
     int freeBlocks;
     Graph blocks;
+    List table;
+      
     public SD(int freeBlocks) {
         this.freeBlocks = freeBlocks;
         this.capacity = freeBlocks;
@@ -20,6 +22,7 @@ public class SD {
             nodes[i] = new Node();
         }
         blocks = new Graph(nodes);
+        table = new List();
     }
     
     public void deleteFile(String filename){
@@ -29,6 +32,12 @@ public class SD {
                 next.setFile(null);
                 next.setNext(-1);
                 freeBlocks++;
+            }
+        }
+        NodoList pNext = table.getHead();
+        while(pNext != null){
+            if(((String[])pNext.getValue())[0].equals(filename)){
+                table.delete(pNext);
             }
         }
     }
@@ -42,15 +51,20 @@ public class SD {
         }
         
     }
-    public void updateFile(int blocksnum, String filename) throws Exception{
-        int currentlyBlocks = getBlocks(filename);
-        this.deleteFile(filename);
-        try{
-            this.createFile(blocksnum, filename);
-        }catch( Exception e){
-            this.createFile(currentlyBlocks, filename);
-            throw new Exception(e.getMessage());
-        }
+    public void updateFile( String filename) throws Exception{
+        //**********************************************
+        //esto no es necesario
+        //solo hay que modificar el nombre en el arreglo y la tabla
+        //**********************************************
+//        int currentlyBlocks = getBlocks(filename);
+//        this.deleteFile(filename);
+//        try{
+//            this.createFile(blocksnum, filename);
+//        }catch( Exception e){
+//            this.createFile(currentlyBlocks, filename);
+//            throw new Exception(e.getMessage());
+//        }
+            System.out.println("hola");
     }
     public boolean isFile(String filename){
         if(getBlocks(filename) == 0) return false;
@@ -83,8 +97,16 @@ public class SD {
     private void allocateBlocks(int blocksnum, String filename){
         for (int i = 0; i < blocksnum; i++) {
             int j = this.nextFreeBlock();
+            if(i == 0){
+                String[] array = {filename,Integer.toString(j),Integer.toString(blocksnum)};
+                table.appendLast(array);
+            }
             Node next = blocks.getById(j);
             next.setFile(filename);
+            if(i != blocksnum -1){
+                int nextFree = this.nextFreeBlock();
+                next.setNext(nextFree);
+            }
         }
     }
 }
