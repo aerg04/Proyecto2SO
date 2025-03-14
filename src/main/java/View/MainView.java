@@ -8,13 +8,14 @@ import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-
+import Classes.*;
+import Controller.*;
 /**
  *
  * @author DELL
  */
 public class MainView extends javax.swing.JFrame {
-
+    Controller controller;
     /**
      * Creates new form MainView
      */
@@ -24,15 +25,30 @@ public class MainView extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);        
     }
-    
-    private void updateBlocks(String name,int num){
-        try{
-            
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Not enough blocks");
-        }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+    //solamente falta para que se actulize la tabla de bloques y la tabla de asignacion
+    public void getRows(String value, int i, int j){
+        jTable2.getModel().setValueAt(value, i, j);
     }
     
+    private String getPathAsString(TreePath path) {
+    Object[] nodes = path.getPath();
+    StringBuilder pathString = new StringBuilder();
+
+    for (Object node : nodes) {
+        pathString.append(node.toString()).append("/");
+    }
+
+    // Remove the trailing slash
+    if (pathString.length() > 0) {
+        pathString.setLength(pathString.length() - 1);
+    }
+
+    return pathString.toString();
+}    
     private void updateJtree(String name, int num){
             DefaultTreeModel model = (DefaultTreeModel) jTree1.getModel();
             TreePath selectedPath = jTree1.getSelectionPath();
@@ -53,9 +69,23 @@ public class MainView extends javax.swing.JFrame {
             }
 
             if (!nodeExists) {
-                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
-                selectedNode.add(newNode);
-                model.reload(selectedNode);
+                // Construct the path of the new node before adding it to the tree
+                TreePath parentPath = new TreePath(selectedNode.getPath());
+                String newPath = getPathAsString(parentPath) + "/" + name;
+
+                System.out.println("Path of the new node before adding: " + newPath);
+                try{
+                    if(num >0){
+                        controller.createFile(num, newPath);
+                    }
+                    DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
+                    selectedNode.add(newNode);
+                    model.reload(selectedNode);
+                }catch (Exception e){
+                    JOptionPane.showMessageDialog(this, e.getMessage());
+                        
+                }
+                // Add the new node to the tree
             } else {
                 JOptionPane.showMessageDialog(this, "Cant be 2 same files");
             }
@@ -199,6 +229,7 @@ public class MainView extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(this, "Empty String");
         }
+//        jTree1.getSelectionPath().getPath();
     }//GEN-LAST:event_createButtonActionPerformed
 
     /**

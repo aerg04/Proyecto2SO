@@ -11,23 +11,23 @@ package Classes;
 public class SD {
     int capacity;
     int freeBlocks;
-    Graph blocks;
+    Node[] blocks;
     List table;
       
-    public SD(int freeBlocks) {
+    public SD(int freeBlocks, Node[] nodes, List list) {
         this.freeBlocks = freeBlocks;
         this.capacity = freeBlocks;
-        Node[] nodes = new Node[freeBlocks];
-        for (int i = 0; i < freeBlocks; i++) {
-            nodes[i] = new Node();
-        }
-        blocks = new Graph(nodes);
-        table = new List();
+//        Node[] nodes = new Node[freeBlocks];
+//        for (int i = 0; i < freeBlocks; i++) {
+//            nodes[i] = new Node();
+//        }
+        blocks = nodes;
+        table = list;
     }
     
     public void deleteFile(String filename){
         for (int i = 0; i < capacity; i++) {
-            Node next = blocks.getById(i);
+            Node next = blocks[i];
             if(next.getFile().equals(filename)){
                 next.setFile(null);
                 next.setNext(-1);
@@ -38,42 +38,55 @@ public class SD {
         while(pNext != null){
             if(((String[])pNext.getValue())[0].equals(filename)){
                 table.delete(pNext);
+                break;
             }
         }
     }
     public void createFile(int blocksnum, String filename) throws Exception{
         if(freeBlocks<blocksnum){
-            throw new Exception();
+            throw new Exception(ExceptionMessage.notSpace);
         }else if(this.nameExist(filename)){
-            throw new Exception();
+            throw new Exception(ExceptionMessage.notAPath);
         }else{
             allocateBlocks(blocksnum,filename);
         }
         
     }
-    public void updateFile( String filename) throws Exception{
+    public void updateFile( String filename, String newfilename) throws Exception{
         //**********************************************
-        //esto no es necesario
-        //solo hay que modificar el nombre en el arreglo y la tabla
+
         //**********************************************
-//        int currentlyBlocks = getBlocks(filename);
-//        this.deleteFile(filename);
-//        try{
-//            this.createFile(blocksnum, filename);
-//        }catch( Exception e){
-//            this.createFile(currentlyBlocks, filename);
-//            throw new Exception(e.getMessage());
-//        }
-            System.out.println("hola");
+        NodoList pNext = table.getHead();
+        while(pNext != null){
+            if(((String[])pNext.getValue())[0].equals(filename)){
+                table.delete(pNext);
+                String filename1 = (String) pNext.getValue();
+                filename1 = newfilename;
+                break;
+            }
+        }
+        int i = startFile(filename); 
+        while(i != -1){
+            blocks[i].setFile(newfilename);
+            i = blocks[i].getNext();
+        }
     }
     public boolean isFile(String filename){
         if(getBlocks(filename) == 0) return false;
         return true;
     }
+    
+    public int startFile(String filename){
+        for (int i = 0; i < capacity; i++) {
+            if(blocks[i].getFile().equals(filename) ) return i;
+        }
+        return -1;
+    }
+    
     private int getBlocks(String filename){
         int output = 0;
         for (int i = 0; i < capacity; i++) {
-            String next = blocks.getById(i).getFile();
+            String next = blocks[i].getFile();
             if(next.equals(filename)) output++;
         }
         return output;
@@ -81,7 +94,7 @@ public class SD {
     
     private boolean nameExist(String filename){
         for (int i = 0; i < capacity; i++) {
-            String next = blocks.getById(i).getFile();
+            String next = blocks[i].getFile();
             if(next.equals(filename)) return true;
         }
         return false;
@@ -89,7 +102,7 @@ public class SD {
     
     private int nextFreeBlock(){
         for (int i = 0; i < capacity; i++) {
-            String next = blocks.getById(i).getFile();
+            String next = blocks[i].getFile();
             if(next.equals(null)) return i;
         }
         return -1;
@@ -101,7 +114,7 @@ public class SD {
                 String[] array = {filename,Integer.toString(j),Integer.toString(blocksnum)};
                 table.appendLast(array);
             }
-            Node next = blocks.getById(j);
+            Node next = blocks[j];
             next.setFile(filename);
             if(i != blocksnum -1){
                 int nextFree = this.nextFreeBlock();

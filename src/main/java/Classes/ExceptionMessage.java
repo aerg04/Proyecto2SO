@@ -8,15 +8,8 @@ package Classes;
  *
  * @author DELL
  */
-public class Graph {
-    private Node[] array;
+public class ExceptionMessage {
+    public static final String notAPath = "Not a file";
+    public static final String notSpace = "Not space avaliable";
 
-    public Graph(Node[] array) {
-        this.array = array;
-    }
-
-    public Node getById(int i) {
-        return array[i];
-    }
-    
 }
