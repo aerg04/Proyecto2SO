@@ -1,8 +1,9 @@
+package View;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package View;
 
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -10,30 +11,117 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import Classes.*;
 import Controller.*;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author DELL
  */
 public class MainView extends javax.swing.JFrame {
     Controller controller;
+    Classes.List asigntable;
     /**
      * Creates new form MainView
      */
+    public MainView(Classes.List data) {
+        initComponents();
+        this.setVisible(true);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        asigntable = data;
+        this.createButton.setEnabled(false);
+        this.updateButton.setEnabled(false);
+        this.deleteButton.setEnabled(false);
+    }
     public MainView() {
         initComponents();
         this.setVisible(true);
         this.setResizable(false);
-        this.setLocationRelativeTo(null);        
+        this.setLocationRelativeTo(null);
+        
     }
 
     public void setController(Controller controller) {
         this.controller = controller;
     }
+    public void updateJtable1(){
+
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            model.removeRow(i);
+        }
+
+        NodoList pNext = asigntable.getHead();
+        while(pNext != null){
+            String[] new_ = new String[3];
+
+            int i = ((String[]) pNext.getValue())[0].split("/").length-1;
+            new_[0] = ((String[]) pNext.getValue())[0].split("/")[i];
+
+            
+            new_[1] = ((String[]) pNext.getValue())[1];
+            new_[2] = ((String[]) pNext.getValue())[2];
+            model.addRow(new_);
+            pNext = pNext.getpNext();
+        }
+
+    }
     //solamente falta para que se actulize la tabla de bloques y la tabla de asignacion
-    public void getRows(String value, int i, int j){
-        jTable2.getModel().setValueAt(value, i, j);
+    public void updateJtable2(){
+        //controler. getBlocks  return a String[][]
+
+        String[][] blocks = controller.getBlocks();
+        for (int row = 0; row < blocks.length; row++) {
+            for (int col = 0; col < blocks[row].length; col++) {
+                jTable2.setValueAt(blocks[row][col], row, col);
+            }
+        }
+        
     }
     
+    public void updateJtree(String name){
+        DefaultTreeModel model = (DefaultTreeModel) jTree1.getModel();
+        TreePath selectedPath = jTree1.getSelectionPath();
+        if (selectedPath == null) {
+            JOptionPane.showMessageDialog(this, "Select a node to rename");
+            return;
+        }
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
+        DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
+
+        // Check if a node with the same name already exists among siblings
+        boolean nodeExists = false;
+        for (int i = 0; i < parentNode.getChildCount(); i++) {
+            DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) parentNode.getChildAt(i);
+            if (name.equals(childNode.getUserObject().toString())) {
+                nodeExists = true;
+                break;
+            }
+        }
+
+        if (nodeExists) {
+            JOptionPane.showMessageDialog(this, "A node with the same name already exists");
+            return;
+        }
+
+        // Construct the path of the new node
+        try {
+            if (controller.isAFile(this.getPathAsString(selectedPath))) {
+                name = name + ".txt";
+                String newPath = getPathAsString(selectedPath.getParentPath()) + "/" + name;
+
+                System.out.println("Path of the new node before renaming: " + newPath);
+                controller.updateFile(this.getPathAsString(selectedPath), newPath);
+            }
+            selectedNode.setUserObject(name);
+            model.nodeChanged(selectedNode);
+            model.reload(selectedNode);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
     private String getPathAsString(TreePath path) {
     Object[] nodes = path.getPath();
     StringBuilder pathString = new StringBuilder();
@@ -49,7 +137,7 @@ public class MainView extends javax.swing.JFrame {
 
     return pathString.toString();
 }    
-    private void updateJtree(String name, int num){
+    private void createJtree(String name, int num){
             DefaultTreeModel model = (DefaultTreeModel) jTree1.getModel();
             TreePath selectedPath = jTree1.getSelectionPath();
             DefaultMutableTreeNode selectedNode;
@@ -70,20 +158,31 @@ public class MainView extends javax.swing.JFrame {
 
             if (!nodeExists) {
                 // Construct the path of the new node before adding it to the tree
-                TreePath parentPath = new TreePath(selectedNode.getPath());
-                String newPath = getPathAsString(parentPath) + "/" + name;
-
-                System.out.println("Path of the new node before adding: " + newPath);
                 try{
+                    if (controller.isAFile(this.getPathAsString( new TreePath(selectedNode.getPath()) ))) {
+                        JOptionPane.showMessageDialog(this,"Is a file");
+                        return;
+                    }
                     if(num >0){
+                        name = name + ".txt";
+                        TreePath parentPath = new TreePath(selectedNode.getPath());
+                        
+                        String newPath = getPathAsString(parentPath) + "/" + name;
+                        
+
+                        System.out.println("Path of the new node before adding: " + newPath);
                         controller.createFile(num, newPath);
                     }
+                    //System.out.println("hola2");
                     DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
+                    //System.out.println("hola3");
                     selectedNode.add(newNode);
+                    //System.out.println("hola4");
                     model.reload(selectedNode);
+                    //System.out.println("hola5");
                 }catch (Exception e){
                     JOptionPane.showMessageDialog(this, e.getMessage());
-                        
+                    e.printStackTrace();
                 }
                 // Add the new node to the tree
             } else {
@@ -152,9 +251,19 @@ public class MainView extends javax.swing.JFrame {
         jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, 230, 180));
 
         updateButton.setText("Update");
+        updateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateButtonActionPerformed(evt);
+            }
+        });
         jPanel1.add(updateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 110, 120, -1));
 
         deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
         jPanel1.add(deleteButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 140, 120, -1));
 
         createButton.setText("Create");
@@ -166,9 +275,13 @@ public class MainView extends javax.swing.JFrame {
         jPanel1.add(createButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 80, 120, -1));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "User", "Admin" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 30, 120, -1));
 
-        jTable2.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"1", null, null, null, null, null, null, null, null, null},
@@ -221,7 +334,7 @@ public class MainView extends javax.swing.JFrame {
             String blocknum = JOptionPane.showInputDialog("Numero de bloques");
             try{
                 int num = Integer.parseInt(blocknum);
-                this.updateJtree(name,num);
+                this.createJtree(name,num);
                 
             }catch(Exception e){
                 JOptionPane.showMessageDialog(this, "Not an integer");
@@ -229,8 +342,61 @@ public class MainView extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(this, "Empty String");
         }
-//        jTree1.getSelectionPath().getPath();
+        this.updateJtable1();
+        this.updateJtable2();
     }//GEN-LAST:event_createButtonActionPerformed
+
+    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+        // TODO add your handling code here:
+        String name = JOptionPane.showInputDialog("Nombre del archivo/directorio");
+        if(!name.equals(null)){
+            
+            try{
+                this.updateJtree(name);
+                
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(this, "Not an integer");
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Empty String");
+        }
+        this.updateJtable1();
+        this.updateJtable2();
+    }//GEN-LAST:event_updateButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        // TODO add your handling code here:
+        TreePath selectedPath = jTree1.getSelectionPath();
+    if (selectedPath == null) {
+        JOptionPane.showMessageDialog(this, "Select a node to delete");
+        return;
+    }
+
+    // Delete the file using the controller
+    controller.deleteFile(this.getPathAsString(selectedPath));
+
+    // Remove the node from the JTree
+    DefaultTreeModel model = (DefaultTreeModel) jTree1.getModel();
+    DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
+    model.removeNodeFromParent(selectedNode);
+
+    // Update the tables
+    this.updateJtable1();
+    this.updateJtable2();
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+        if(this.jComboBox1.getSelectedIndex() == 0){
+            this.createButton.setEnabled(false);
+            this.updateButton.setEnabled(false);
+            this.deleteButton.setEnabled(false);
+        }else{
+            this.createButton.setEnabled(true);
+            this.updateButton.setEnabled(true);
+            this.deleteButton.setEnabled(true);  
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -24,14 +24,20 @@ public class SD {
         blocks = nodes;
         table = list;
     }
+
+    public Node[] getBlocks() {
+        return blocks;
+    }
     
     public void deleteFile(String filename){
         for (int i = 0; i < capacity; i++) {
             Node next = blocks[i];
-            if(next.getFile().equals(filename)){
-                next.setFile(null);
-                next.setNext(-1);
-                freeBlocks++;
+            if(next.getFile()!= null){
+                if(next.getFile().equals(filename)){
+                    next.setFile(null);
+                    next.setNext(-1);
+                    freeBlocks++;
+                }
             }
         }
         NodoList pNext = table.getHead();
@@ -46,7 +52,7 @@ public class SD {
         if(freeBlocks<blocksnum){
             throw new Exception(ExceptionMessage.notSpace);
         }else if(this.nameExist(filename)){
-            throw new Exception(ExceptionMessage.notAPath);
+            throw new Exception(ExceptionMessage.sameName);
         }else{
             allocateBlocks(blocksnum,filename);
         }
@@ -54,14 +60,15 @@ public class SD {
     }
     public void updateFile( String filename, String newfilename) throws Exception{
         //**********************************************
-
+        if(this.nameExist(newfilename)){
+            throw new Exception(ExceptionMessage.sameName);
+        }
         //**********************************************
         NodoList pNext = table.getHead();
         while(pNext != null){
             if(((String[])pNext.getValue())[0].equals(filename)){
-                table.delete(pNext);
-                String filename1 = (String) pNext.getValue();
-                filename1 = newfilename;
+                ((String[]) pNext.getValue())[0] = newfilename;
+
                 break;
             }
         }
@@ -78,7 +85,9 @@ public class SD {
     
     public int startFile(String filename){
         for (int i = 0; i < capacity; i++) {
+            if(blocks[i].getFile() != null){
             if(blocks[i].getFile().equals(filename) ) return i;
+            }
         }
         return -1;
     }
@@ -87,7 +96,9 @@ public class SD {
         int output = 0;
         for (int i = 0; i < capacity; i++) {
             String next = blocks[i].getFile();
+            if (next != null) {    
             if(next.equals(filename)) output++;
+            }
         }
         return output;
     }
@@ -95,7 +106,9 @@ public class SD {
     private boolean nameExist(String filename){
         for (int i = 0; i < capacity; i++) {
             String next = blocks[i].getFile();
+            if(next != null){
             if(next.equals(filename)) return true;
+            }
         }
         return false;
     }
@@ -103,7 +116,7 @@ public class SD {
     private int nextFreeBlock(){
         for (int i = 0; i < capacity; i++) {
             String next = blocks[i].getFile();
-            if(next.equals(null)) return i;
+            if(next == null) return i;
         }
         return -1;
     }
@@ -120,6 +133,7 @@ public class SD {
                 int nextFree = this.nextFreeBlock();
                 next.setNext(nextFree);
             }
+            freeBlocks--;
         }
     }
 }
