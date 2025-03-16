@@ -46,6 +46,7 @@ public class SD {
                 table.delete(pNext);
                 break;
             }
+            pNext = pNext.getpNext();
         }
     }
     public void createFile(int blocksnum, String filename) throws Exception{

@@ -136,7 +136,19 @@ public class MainView extends javax.swing.JFrame {
     }
 
     return pathString.toString();
-}    
+    }  
+    private void deleteNodeAndChildren(DefaultMutableTreeNode node) {
+    // Recursively delete all child nodes
+    while (node.getChildCount() > 0) {
+        DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) node.getFirstChild();
+        deleteNodeAndChildren(childNode);
+        node.remove(childNode);
+    }
+
+    // Delete the file associated with this node
+    TreePath path = new TreePath(node.getPath());
+    controller.deleteFile(this.getPathAsString(path));
+    }
     private void createJtree(String name, int num){
             DefaultTreeModel model = (DefaultTreeModel) jTree1.getModel();
             TreePath selectedPath = jTree1.getSelectionPath();
@@ -365,19 +377,21 @@ public class MainView extends javax.swing.JFrame {
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
-        TreePath selectedPath = jTree1.getSelectionPath();
+      // TODO add your handling code here:
+    TreePath selectedPath = jTree1.getSelectionPath();
     if (selectedPath == null) {
         JOptionPane.showMessageDialog(this, "Select a node to delete");
         return;
     }
 
-    // Delete the file using the controller
-    controller.deleteFile(this.getPathAsString(selectedPath));
-
-    // Remove the node from the JTree
+    // Get the selected node
     DefaultTreeModel model = (DefaultTreeModel) jTree1.getModel();
     DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
+
+    // Recursively delete all child nodes and their files
+    deleteNodeAndChildren(selectedNode);
+
+    // Remove the node from the JTree
     model.removeNodeFromParent(selectedNode);
 
     // Update the tables
