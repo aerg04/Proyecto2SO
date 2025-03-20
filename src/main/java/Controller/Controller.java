@@ -29,7 +29,7 @@ public class Controller {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 10; j++) {
                 try{
-                    output[i][j] = i + j + ": " + sd.getBlocks()[i*10 + j].getFile().split("/")[sd.getBlocks()[i*10 + j].getFile().split("/").length-1];
+                    output[i][j] = Integer.toString(i) + Integer.toString(j) + ": " + sd.getBlocks()[i*10 + j].getFile().split("/")[sd.getBlocks()[i*10 + j].getFile().split("/").length-1];
                 }catch(Exception e){
                     output[i][j] = Integer.toString(i) + Integer.toString(j) + ": free";
                 }

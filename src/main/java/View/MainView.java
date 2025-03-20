@@ -58,8 +58,6 @@ public class MainView extends javax.swing.JFrame {
 
             int i = ((String[]) pNext.getValue())[0].split("/").length-1;
             new_[0] = ((String[]) pNext.getValue())[0].split("/")[i];
-
-            
             new_[1] = ((String[]) pNext.getValue())[1];
             new_[2] = ((String[]) pNext.getValue())[2];
             model.addRow(new_);
@@ -367,7 +365,7 @@ public class MainView extends javax.swing.JFrame {
                 this.updateJtree(name);
                 
             }catch(Exception e){
-                JOptionPane.showMessageDialog(this, "Not an integer");
+                JOptionPane.showMessageDialog(this, e.getMessage());
             }
         }else{
             JOptionPane.showMessageDialog(this, "Empty String");
