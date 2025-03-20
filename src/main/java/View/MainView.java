@@ -339,9 +339,9 @@ public class MainView extends javax.swing.JFrame {
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
         // TODO add your handling code here:
-        String name = JOptionPane.showInputDialog("Nombre del archivo/directorio");
+        String name = JOptionPane.showInputDialog("file/path name");
         if(!name.equals(null)){
-            String blocknum = JOptionPane.showInputDialog("Numero de bloques");
+            String blocknum = JOptionPane.showInputDialog("Blocks (Integer)");
             try{
                 int num = Integer.parseInt(blocknum);
                 this.createJtree(name,num);
