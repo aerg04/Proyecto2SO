@@ -25,6 +25,14 @@ public class SD {
         table = list;
     }
 
+    public List getTable() {
+        return table;
+    }
+
+    public void setTable(List table) {
+        this.table = table;
+    }
+    
     public Node[] getBlocks() {
         return blocks;
     }

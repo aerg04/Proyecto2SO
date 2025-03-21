@@ -1,0 +1,13 @@
+{
+  "name": "root",
+  "children": [
+    {
+      "name": "12",
+      "children": []
+    },
+    {
+      "name": "2.txt",
+      "children": []
+    }
+  ]
+}
