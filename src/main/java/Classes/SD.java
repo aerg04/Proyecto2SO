@@ -96,6 +96,7 @@ public class SD {
 
                 break;
             }
+            pNext = pNext.getpNext();
         }
         int i = startFile(filename); 
         while(i != -1){
