@@ -27,15 +27,6 @@ public class MainView extends javax.swing.JFrame {
      */
     public MainView(Classes.List data) {
         initComponents();
-        
-        javax.swing.JButton saveButton = new javax.swing.JButton("Guardar");
-        saveButton.addActionListener(e -> guardarEstado());
-        jPanel1.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, 120, -1));
-
-        javax.swing.JButton loadButton = new javax.swing.JButton("Cargar");
-        loadButton.addActionListener(e -> cargarEstado());
-        jPanel1.add(loadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 120, -1));
-        
         this.setVisible(true);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -43,10 +34,8 @@ public class MainView extends javax.swing.JFrame {
         this.createButton.setEnabled(false);
         this.updateButton.setEnabled(false);
         this.deleteButton.setEnabled(false);
-    }
-    public MainView() {
-        initComponents();
         
+        // Botones de guardar y cargar
         javax.swing.JButton saveButton = new javax.swing.JButton("Guardar");
         saveButton.addActionListener(e -> guardarEstado());
         jPanel1.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, 120, -1));
@@ -54,11 +43,22 @@ public class MainView extends javax.swing.JFrame {
         javax.swing.JButton loadButton = new javax.swing.JButton("Cargar");
         loadButton.addActionListener(e -> cargarEstado());
         jPanel1.add(loadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 120, -1));
-        
+    }
+    
+    public MainView() {
+        initComponents();   
         this.setVisible(true);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        
+       
+        // Botones de guardar y cargar
+        javax.swing.JButton saveButton = new javax.swing.JButton("Guardar");
+        saveButton.addActionListener(e -> guardarEstado());
+        jPanel1.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, 120, -1));
+
+        javax.swing.JButton loadButton = new javax.swing.JButton("Cargar");
+        loadButton.addActionListener(e -> cargarEstado());
+        jPanel1.add(loadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 120, -1));
     }
 
     public void setController(Controller controller) {

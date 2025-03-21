@@ -2,35 +2,71 @@ package Utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import Classes.SD;
+import Classes.ModeloSDTemp;
+import Classes.List; // Tu lista personalizada
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Type;
 
 public class JsonUtil {
 
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static void guardarSDEnJson(String rutaArchivo, Classes.SD sd) {
+    // Guardar SD en JSON usando ModeloSDTemp
+    public static void guardarSDEnJson(String rutaArchivo, SD sd) {
         try (FileWriter writer = new FileWriter(rutaArchivo)) {
-            gson.toJson(sd, writer);
+            ModeloSDTemp temp = new ModeloSDTemp(
+                sd.getCapacidad(),
+                sd.getBloquesLibres(),
+                sd.getBloques(),
+                convertListToArray(sd.getTabla()) // Convertimos la lista a un array antes de guardar
+            );
+            gson.toJson(temp, writer);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static Classes.SD leerSDDesdeJson(String rutaArchivo) {
+    // Leer SD desde JSON usando ModeloSDTemp
+    public static SD leerSDDesdeJson(String rutaArchivo) {
         try (FileReader reader = new FileReader(rutaArchivo)) {
-            return gson.fromJson(reader, Classes.SD.class);
+            Type modeloSDTempType = new TypeToken<ModeloSDTemp>() {}.getType();
+            ModeloSDTemp temp = gson.fromJson(reader, modeloSDTempType);
+
+            List tabla = convertArrayToList(temp.getTabla()); // Convertimos el array de vuelta a la lista personalizada
+            return new SD(temp.getBloquesLibres(), temp.getBloques(), tabla);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
+    // Métodos auxiliares para convertir entre List y array
+    private static String[] convertListToArray(List tabla) {
+        String[] array = new String[tabla.getSize()];
+        int index = 0;
+        for (Object nodo : tabla) {
+            array[index++] = (String) nodo;
+        }
+        return array;
+    }
+
+    private static List convertArrayToList(String[] array) {
+        List tabla = new List();
+        for (String elemento : array) {
+            tabla.appendLast(elemento);
+        }
+        return tabla;
+    }
+
+    // Guardar el estado del JTree
     public static void guardarJTreeEnJson(String rutaArchivo, DefaultMutableTreeNode root) {
         try (FileWriter writer = new FileWriter(rutaArchivo)) {
             gson.toJson(convertTreeNodeToJson(root), writer);
@@ -39,6 +75,7 @@ public class JsonUtil {
         }
     }
 
+    // Leer el estado del JTree
     public static DefaultMutableTreeNode leerJTreeDesdeJson(String rutaArchivo) {
         try (FileReader reader = new FileReader(rutaArchivo)) {
             TreeNodeJson jsonNode = gson.fromJson(reader, TreeNodeJson.class);
@@ -49,6 +86,7 @@ public class JsonUtil {
         }
     }
 
+    // Convertir DefaultMutableTreeNode a JSON-friendly estructura
     private static TreeNodeJson convertTreeNodeToJson(DefaultMutableTreeNode node) {
         TreeNodeJson jsonNode = new TreeNodeJson(node.toString());
         for (int i = 0; i < node.getChildCount(); i++) {
@@ -57,6 +95,7 @@ public class JsonUtil {
         return jsonNode;
     }
 
+    // Convertir JSON a DefaultMutableTreeNode
     private static DefaultMutableTreeNode convertJsonToTreeNode(TreeNodeJson jsonNode) {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(jsonNode.name);
         for (TreeNodeJson childJson : jsonNode.children) {
@@ -65,16 +104,13 @@ public class JsonUtil {
         return node;
     }
 
-    // Clase interna para representar los nodos como JSON
+    // Clase auxiliar para serializar nodos de JTree
     private static class TreeNodeJson {
         String name;
-        List<TreeNodeJson> children = new ArrayList<>();
+        java.util.List<TreeNodeJson> children = new java.util.ArrayList<>();
 
         TreeNodeJson(String name) {
             this.name = name;
         }
-
-        // Constructor vacío requerido por Gson
-        public TreeNodeJson() {}
     }
 }

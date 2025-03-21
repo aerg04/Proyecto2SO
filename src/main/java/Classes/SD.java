@@ -29,6 +29,22 @@ public class SD {
         return blocks;
     }
     
+    public int getCapacidad() {
+        return capacity;
+    }
+
+    public int getBloquesLibres() {
+        return freeBlocks;
+    }
+
+    public Node[] getBloques() {
+        return blocks;
+    }
+
+    public List getTabla() {
+        return table;
+    }
+    
     public void deleteFile(String filename){
         for (int i = 0; i < capacity; i++) {
             Node next = blocks[i];

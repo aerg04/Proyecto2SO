@@ -4,15 +4,36 @@
  */
 package Classes;
 
+import java.util.Iterator;
+
 /**
  *
  * @author DELL
  * @param <T>
  */
-public class List <T>{
+public class List <T> implements Iterable<T>{
     NodoList<T> head;
     NodoList<T> last;
     int size;
+    
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private NodoList<T> current = head;
+
+            @Override
+            public boolean hasNext() {
+                return current != null;
+            }
+
+            @Override
+            public T next() {
+                T value = current.getValue();
+                current = current.getpNext();
+                return value;
+            }
+        };
+    }
 
     public int getSize() {
         return size;
