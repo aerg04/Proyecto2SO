@@ -14,6 +14,15 @@ public class Controller {
     public Controller(SD sd) {
         this.sd = sd;
     }
+    
+    public SD getSD() {
+        return sd;
+    }
+    
+    public void setSD(SD sd) {
+        this.sd = sd;
+    }
+    
     public void createFile(int num,String name) throws Exception {
         sd.createFile(num, name);
     }

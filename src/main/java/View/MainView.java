@@ -11,6 +11,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import Classes.*;
 import Controller.*;
+import Utils.JsonUtil;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,6 +27,15 @@ public class MainView extends javax.swing.JFrame {
      */
     public MainView(Classes.List data) {
         initComponents();
+        
+        javax.swing.JButton saveButton = new javax.swing.JButton("Guardar");
+        saveButton.addActionListener(e -> guardarEstado());
+        jPanel1.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, 120, -1));
+
+        javax.swing.JButton loadButton = new javax.swing.JButton("Cargar");
+        loadButton.addActionListener(e -> cargarEstado());
+        jPanel1.add(loadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 120, -1));
+        
         this.setVisible(true);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -36,6 +46,15 @@ public class MainView extends javax.swing.JFrame {
     }
     public MainView() {
         initComponents();
+        
+        javax.swing.JButton saveButton = new javax.swing.JButton("Guardar");
+        saveButton.addActionListener(e -> guardarEstado());
+        jPanel1.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, 120, -1));
+
+        javax.swing.JButton loadButton = new javax.swing.JButton("Cargar");
+        loadButton.addActionListener(e -> cargarEstado());
+        jPanel1.add(loadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 120, -1));
+        
         this.setVisible(true);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -45,6 +64,38 @@ public class MainView extends javax.swing.JFrame {
     public void setController(Controller controller) {
         this.controller = controller;
     }
+    
+    private void guardarEstado() {
+    if (controller == null) {
+        JOptionPane.showMessageDialog(this, "Controlador no inicializado");
+        return;
+    }
+    JsonUtil.guardarSDEnJson("sd_estado.json", controller.getSD());
+    JsonUtil.guardarJTreeEnJson("jtree_estado.json", (DefaultMutableTreeNode) jTree1.getModel().getRoot());
+    JOptionPane.showMessageDialog(this, "Estado guardado correctamente");
+}
+
+// Paso 2 - Cargar estado
+private void cargarEstado() {
+    Classes.SD sdRecuperado = JsonUtil.leerSDDesdeJson("sd_estado.json");
+    DefaultMutableTreeNode root = JsonUtil.leerJTreeDesdeJson("jtree_estado.json");
+
+    if (sdRecuperado != null) {
+        controller.setSD(sdRecuperado); // Este método debes implementarlo si no existe aún
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al leer el archivo SD");
+    }
+
+    if (root != null) {
+        jTree1.setModel(new DefaultTreeModel(root));
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al leer el archivo JTree");
+    }
+
+    updateJtable1();
+    updateJtable2();
+}
+
     public void updateJtable1(){
 
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
