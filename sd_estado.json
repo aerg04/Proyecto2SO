@@ -1,31 +1,37 @@
 {
-  "capacity": 40,
-  "freeBlocks": 38,
-  "blocks": [
+  "capacidad": 32,
+  "bloquesLibres": 32,
+  "bloques": [
     {
-      "file": "root/2.txt",
+      "file": "root/q.txt",
       "next": 1
     },
     {
+      "file": "root/q.txt",
+      "next": -1
+    },
+    {
+      "file": "root/2.txt",
+      "next": 3
+    },
+    {
       "file": "root/2.txt",
       "next": -1
     },
     {
+      "file": "root/5/2.txt",
+      "next": 5
+    },
+    {
+      "file": "root/5/2.txt",
       "next": -1
     },
     {
-      "next": -1
+      "file": "root/dfdf.txt",
+      "next": 7
     },
     {
-      "next": -1
-    },
-    {
-      "next": -1
-    },
-    {
-      "next": -1
-    },
-    {
+      "file": "root/dfdf.txt",
       "next": -1
     },
     {
@@ -125,21 +131,26 @@
       "next": -1
     }
   ],
-  "table": {
-    "head": {
-      "value": [
-        "root/2.txt",
-        "0",
-        "2"
-      ]
-    },
-    "last": {
-      "value": [
-        "root/2.txt",
-        "0",
-        "2"
-      ]
-    },
-    "size": 1
-  }
+  "tabla": [
+    [
+      "root/q.txt",
+      "0",
+      "2"
+    ],
+    [
+      "root/2.txt",
+      "2",
+      "2"
+    ],
+    [
+      "root/5/2.txt",
+      "4",
+      "2"
+    ],
+    [
+      "root/dfdf.txt",
+      "6",
+      "2"
+    ]
+  ]
 }

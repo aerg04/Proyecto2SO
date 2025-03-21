@@ -2,11 +2,24 @@
   "name": "root",
   "children": [
     {
-      "name": "12",
+      "name": "q.txt",
       "children": []
     },
     {
       "name": "2.txt",
+      "children": []
+    },
+    {
+      "name": "5",
+      "children": [
+        {
+          "name": "2.txt",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "dfdf.txt",
       "children": []
     }
   ]

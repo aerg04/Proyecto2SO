@@ -6,9 +6,9 @@ public class ModeloSDTemp implements Serializable {
     private int capacidad;
     private int bloquesLibres;
     private Node[] bloques;
-    private String[] tabla; // Se guarda la tabla como array de Strings en JSON
+    private String[][] tabla; // Se guarda la tabla como array de Strings en JSON
 
-    public ModeloSDTemp(int capacidad, int bloquesLibres, Node[] bloques, String[] tabla) {
+    public ModeloSDTemp(int capacidad, int bloquesLibres, Node[] bloques, String[][] tabla) {
         this.capacidad = capacidad;
         this.bloquesLibres = bloquesLibres;
         this.bloques = bloques;
@@ -40,11 +40,11 @@ public class ModeloSDTemp implements Serializable {
         this.bloques = bloques;
     }
 
-    public String[] getTabla() {
+    public String[][] getTabla() {
         return tabla;
     }
 
-    public void setTabla(String[] tabla) {
+    public void setTabla(String[][] tabla) {
         this.tabla = tabla;
     }
 }

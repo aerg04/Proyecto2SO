@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import Classes.SD;
 import Classes.ModeloSDTemp;
 import Classes.List; // Tu lista personalizada
+import Classes.NodoList;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -49,18 +50,22 @@ public class JsonUtil {
     }
 
     // Métodos auxiliares para convertir entre List y array
-    private static String[] convertListToArray(List tabla) {
-        String[] array = new String[tabla.getSize()];
+    private static String[][] convertListToArray(List tabla) {
+        int size = tabla.getSize();
+        String[][] array = new String[size][];
+        NodoList current = tabla.getHead();
         int index = 0;
-        for (Object nodo : tabla) {
-            array[index++] = (String) nodo;
+        while (current != null) {
+            array[index] = (String[]) current.getValue();
+            current = current.getpNext();
+            index++;
         }
         return array;
     }
 
-    private static List convertArrayToList(String[] array) {
+    private static List convertArrayToList(String[][] array) {
         List tabla = new List();
-        for (String elemento : array) {
+        for (String[] elemento : array) {
             tabla.appendLast(elemento);
         }
         return tabla;

@@ -36,13 +36,13 @@ public class MainView extends javax.swing.JFrame {
         this.deleteButton.setEnabled(false);
         
         // Botones de guardar y cargar
-        javax.swing.JButton saveButton = new javax.swing.JButton("Guardar");
-        saveButton.addActionListener(e -> guardarEstado());
-        jPanel1.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, 120, -1));
-
-        javax.swing.JButton loadButton = new javax.swing.JButton("Cargar");
-        loadButton.addActionListener(e -> cargarEstado());
-        jPanel1.add(loadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 120, -1));
+//        javax.swing.JButton saveButton = new javax.swing.JButton("Guardar");
+//        saveButton.addActionListener(e -> guardarEstado());
+//        jPanel1.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, 120, -1));
+//
+//        javax.swing.JButton loadButton = new javax.swing.JButton("Cargar");
+//        loadButton.addActionListener(e -> cargarEstado());
+//        jPanel1.add(loadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 120, -1));
     }
     
     public MainView() {
@@ -52,13 +52,13 @@ public class MainView extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
        
         // Botones de guardar y cargar
-        javax.swing.JButton saveButton = new javax.swing.JButton("Guardar");
-        saveButton.addActionListener(e -> guardarEstado());
-        jPanel1.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, 120, -1));
-
-        javax.swing.JButton loadButton = new javax.swing.JButton("Cargar");
-        loadButton.addActionListener(e -> cargarEstado());
-        jPanel1.add(loadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 120, -1));
+//        javax.swing.JButton saveButton = new javax.swing.JButton("Guardar");
+//        saveButton.addActionListener(e -> guardarEstado());
+//        jPanel1.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, 120, -1));
+//
+//        javax.swing.JButton loadButton = new javax.swing.JButton("Cargar");
+//        loadButton.addActionListener(e -> cargarEstado());
+//        jPanel1.add(loadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 120, -1));
     }
 
     public void setController(Controller controller) {
@@ -102,6 +102,8 @@ private void cargarEstado() {
         for (int i = 0; i < model.getRowCount(); i++) {
             model.removeRow(i);
         }
+        if(model.getRowCount() != 0)
+        model.removeRow(0);
 
         NodoList pNext = controller.getSD().getTable().getHead();
         while(pNext != null){
@@ -409,7 +411,8 @@ private void cargarEstado() {
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
         // TODO add your handling code here:
         String name = JOptionPane.showInputDialog("file/path name");
-        if(!name.equals(null)){
+        
+        if(name != null && !name.isBlank()){
             String blocknum = JOptionPane.showInputDialog("Blocks (Integer)");
             try{
                 int num = Integer.parseInt(blocknum);
@@ -428,7 +431,7 @@ private void cargarEstado() {
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         // TODO add your handling code here:
         String name = JOptionPane.showInputDialog("Nombre del archivo/directorio");
-        if(!name.equals(null)){
+        if(name != null && !name.isBlank()){
             
             try{
                 this.updateJtree(name);
