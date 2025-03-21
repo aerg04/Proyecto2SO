@@ -103,17 +103,19 @@ private void cargarEstado() {
             model.removeRow(i);
         }
         if(model.getRowCount() != 0)
-        model.removeRow(0);
+            model.removeRow(0);
 
         NodoList pNext = controller.getSD().getTable().getHead();
         while(pNext != null){
-            String[] new_ = new String[3];
+            if(pNext.getValue() != null){
+                String[] new_ = new String[3];
 
-            int i = ((String[]) pNext.getValue())[0].split("/").length-1;
-            new_[0] = ((String[]) pNext.getValue())[0].split("/")[i];
-            new_[1] = ((String[]) pNext.getValue())[1];
-            new_[2] = ((String[]) pNext.getValue())[2];
-            model.addRow(new_);
+                int i = ((String[]) pNext.getValue())[0].split("/").length-1;
+                new_[0] = ((String[]) pNext.getValue())[0].split("/")[i];
+                new_[1] = ((String[]) pNext.getValue())[1];
+                new_[2] = ((String[]) pNext.getValue())[2];
+                model.addRow(new_);
+            }
             pNext = pNext.getpNext();
         }
 

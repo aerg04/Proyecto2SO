@@ -2,13 +2,13 @@ package Classes;
 
 import java.io.Serializable;
 
-public class ModeloSDTemp implements Serializable {
+public class SDTemp implements Serializable {
     private int capacidad;
     private int bloquesLibres;
     private Node[] bloques;
     private String[][] tabla; // Se guarda la tabla como array de Strings en JSON
 
-    public ModeloSDTemp(int capacidad, int bloquesLibres, Node[] bloques, String[][] tabla) {
+    public SDTemp(int capacidad, int bloquesLibres, Node[] bloques, String[][] tabla) {
         this.capacidad = capacidad;
         this.bloquesLibres = bloquesLibres;
         this.bloques = bloques;

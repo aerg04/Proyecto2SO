@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import Classes.SD;
-import Classes.ModeloSDTemp;
+import Classes.SDTemp;
 import Classes.List; // Tu lista personalizada
 import Classes.NodoList;
 
@@ -23,7 +23,7 @@ public class JsonUtil {
     // Guardar SD en JSON usando ModeloSDTemp
     public static void guardarSDEnJson(String rutaArchivo, SD sd) {
         try (FileWriter writer = new FileWriter(rutaArchivo)) {
-            ModeloSDTemp temp = new ModeloSDTemp(
+            SDTemp temp = new SDTemp(
                 sd.getCapacidad(),
                 sd.getBloquesLibres(),
                 sd.getBloques(),
@@ -38,8 +38,8 @@ public class JsonUtil {
     // Leer SD desde JSON usando ModeloSDTemp
     public static SD leerSDDesdeJson(String rutaArchivo) {
         try (FileReader reader = new FileReader(rutaArchivo)) {
-            Type modeloSDTempType = new TypeToken<ModeloSDTemp>() {}.getType();
-            ModeloSDTemp temp = gson.fromJson(reader, modeloSDTempType);
+            Type modeloSDTempType = new TypeToken<SDTemp>() {}.getType();
+            SDTemp temp = gson.fromJson(reader, modeloSDTempType);
 
             List tabla = convertArrayToList(temp.getTabla()); // Convertimos el array de vuelta a la lista personalizada
             return new SD(temp.getBloquesLibres(), temp.getBloques(), tabla);
@@ -52,7 +52,7 @@ public class JsonUtil {
     // Métodos auxiliares para convertir entre List y array
     private static String[][] convertListToArray(List tabla) {
         int size = tabla.getSize();
-        String[][] array = new String[size][];
+        String[][] array = new String[size][3];
         NodoList current = tabla.getHead();
         int index = 0;
         while (current != null) {
