@@ -1,0 +1,145 @@
+{
+  "capacity": 40,
+  "freeBlocks": 38,
+  "blocks": [
+    {
+      "file": "root/2.txt",
+      "next": 1
+    },
+    {
+      "file": "root/2.txt",
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    },
+    {
+      "next": -1
+    }
+  ],
+  "table": {
+    "head": {
+      "value": [
+        "root/2.txt",
+        "0",
+        "2"
+      ]
+    },
+    "last": {
+      "value": [
+        "root/2.txt",
+        "0",
+        "2"
+      ]
+    },
+    "size": 1
+  }
+}

@@ -28,13 +28,13 @@ public class MainView extends javax.swing.JFrame {
     public MainView(Classes.List data) {
         initComponents();
         
-        javax.swing.JButton saveButton = new javax.swing.JButton("Guardar");
-        saveButton.addActionListener(e -> guardarEstado());
-        jPanel1.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, 120, -1));
-
-        javax.swing.JButton loadButton = new javax.swing.JButton("Cargar");
-        loadButton.addActionListener(e -> cargarEstado());
-        jPanel1.add(loadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 120, -1));
+//        javax.swing.JButton saveButton = new javax.swing.JButton("Guardar");
+//        saveButton.addActionListener(e -> guardarEstado());
+//        jPanel1.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, 120, -1));
+//
+//        javax.swing.JButton loadButton = new javax.swing.JButton("Cargar");
+//        loadButton.addActionListener(e -> cargarEstado());
+//        jPanel1.add(loadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 120, -1));
         
         this.setVisible(true);
         this.setResizable(false);
@@ -47,13 +47,13 @@ public class MainView extends javax.swing.JFrame {
     public MainView() {
         initComponents();
         
-        javax.swing.JButton saveButton = new javax.swing.JButton("Guardar");
-        saveButton.addActionListener(e -> guardarEstado());
-        jPanel1.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, 120, -1));
-
-        javax.swing.JButton loadButton = new javax.swing.JButton("Cargar");
-        loadButton.addActionListener(e -> cargarEstado());
-        jPanel1.add(loadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 120, -1));
+//        javax.swing.JButton saveButton = new javax.swing.JButton("Guardar");
+//        saveButton.addActionListener(e -> guardarEstado());
+//        jPanel1.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, 120, -1));
+//
+//        javax.swing.JButton loadButton = new javax.swing.JButton("Cargar");
+//        loadButton.addActionListener(e -> cargarEstado());
+//        jPanel1.add(loadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 120, -1));
         
         this.setVisible(true);
         this.setResizable(false);
@@ -103,7 +103,7 @@ private void cargarEstado() {
             model.removeRow(i);
         }
 
-        NodoList pNext = asigntable.getHead();
+        NodoList pNext = controller.getSD().getTable().getHead();
         while(pNext != null){
             String[] new_ = new String[3];
 
@@ -271,6 +271,8 @@ private void cargarEstado() {
         jComboBox1 = new javax.swing.JComboBox<>();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -317,7 +319,7 @@ private void cargarEstado() {
                 updateButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(updateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 110, 120, -1));
+        jPanel1.add(updateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 100, 120, -1));
 
         deleteButton.setText("Delete");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
@@ -325,7 +327,7 @@ private void cargarEstado() {
                 deleteButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(deleteButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 140, 120, -1));
+        jPanel1.add(deleteButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 130, 120, -1));
 
         createButton.setText("Create");
         createButton.addActionListener(new java.awt.event.ActionListener() {
@@ -333,7 +335,7 @@ private void cargarEstado() {
                 createButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(createButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 80, 120, -1));
+        jPanel1.add(createButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 70, 120, -1));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "User", "Admin" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -373,6 +375,22 @@ private void cargarEstado() {
         jScrollPane3.setViewportView(jTable2);
 
         jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 600, 170));
+
+        jButton1.setText("Save");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 160, 120, -1));
+
+        jButton2.setText("Restore");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 190, 120, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -461,6 +479,16 @@ private void cargarEstado() {
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.cargarEstado();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.guardarEstado();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -499,6 +527,8 @@ private void cargarEstado() {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createButton;
     private javax.swing.JButton deleteButton;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
