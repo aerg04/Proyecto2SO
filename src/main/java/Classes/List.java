@@ -59,6 +59,7 @@ public class List <T> implements Iterable<T>{
              NodoList pAux = head;
              if(head.getValue() != pDelete.getValue()){
                  head = head.getpNext();
+                 size--;
                  delete(pDelete);
                  appendFirst(pAux);
              }else{
